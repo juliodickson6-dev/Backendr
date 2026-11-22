@@ -1,0 +1,262 @@
+/**
+ * EXEMPLOS DE REQUISIÇÕES E RESPOSTAS
+ * 
+ * Cole estes exemplos no Postman ou use com curl
+ */
+
+// ===================================
+// 1. CRIAR CADASTRO
+// ===================================
+
+POST http://localhost:3000/api/cadastro/criar
+Content-Type: application/json
+
+{
+  "nomeCompleto": "João Pedro Silva",
+  "nomePai": "Carlos Silva",
+  "nomeMae": "Ana Silva",
+  "dataNascimento": "1995-05-15",
+  "sexo": "masculino",
+  "estadoCivil": "solteiro",
+  "nacionalidade": "Moçambicana",
+  "naturalidade": "Maputo",
+  "formacao": "Licenciatura em Engenharia",
+  "profissao": "Engenheiro",
+  "documentos": ["bilhete", "passaporte"],
+  "numeroIdentificacao": "123456789ABC20",
+  "validadeAte": "2026-12-31",
+  "ruaAvenida": "Avenida Eduardo Mondlane",
+  "quarteirao": "42",
+  "bairro": "Baixa",
+  "celular": "258840000000",
+  "email": "joao@email.com",
+  "localServico": "AJOV",
+  "grauParentesco": "Amigo",
+  "motivacao": "Quero fazer parte de uma organização que contribui para o desenvolvimento social da comunidade. Tenho interesse em trabalho voluntário e acredito que a AJOV é um espaço perfeito para isso.",
+  "aceiteDeclaracao": true
+}
+
+RESPOSTA (201 - Sucesso):
+{
+  "success": true,
+  "message": "Cadastro realizado com sucesso!",
+  "data": {
+    "id": "550e8400-e29b-41d4-a716-446655440000",
+    "nome": "João Pedro Silva",
+    "email": "joao@email.com",
+    "data_criacao": "2024-06-13T14:30:45.123Z"
+  }
+}
+
+RESPOSTA (409 - Erro: ID já existe):
+{
+  "error": "Este número de identificação já está cadastrado"
+}
+
+RESPOSTA (400 - Erro: Campos faltando):
+{
+  "error": "Campos obrigatórios faltando",
+  "campos_obrigatorios": ["nomeCompleto", "nomeMae", "numeroIdentificacao", "celular"]
+}
+
+
+// ===================================
+// 2. LISTAR CADASTROS
+// ===================================
+
+GET http://localhost:3000/api/cadastro/listar?page=1&limit=10
+
+RESPOSTA (200):
+{
+  "success": true,
+  "data": [
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440000",
+      "nome_completo": "João Pedro Silva",
+      "celular": "258840000000",
+      "email": "joao@email.com",
+      "data_criacao": "2024-06-13T14:30:45.123Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440001",
+      "nome_completo": "Maria Silva",
+      "celular": "258840000001",
+      "email": "maria@email.com",
+      "data_criacao": "2024-06-13T15:45:30.456Z"
+    }
+  ],
+  "paginacao": {
+    "total": 25,
+    "pagina": 1,
+    "limite": 10,
+    "total_paginas": 3
+  }
+}
+
+
+// ===================================
+// 3. OBTER CADASTRO POR ID
+// ===================================
+
+GET http://localhost:3000/api/cadastro/550e8400-e29b-41d4-a716-446655440000
+
+RESPOSTA (200):
+{
+  "success": true,
+  "data": {
+    "id": "550e8400-e29b-41d4-a716-446655440000",
+    "nome_completo": "João Pedro Silva",
+    "nome_pai": "Carlos Silva",
+    "nome_mae": "Ana Silva",
+    "data_nascimento": "1995-05-15",
+    "sexo": "masculino",
+    "estado_civil": "solteiro",
+    "nacionalidade": "Moçambicana",
+    "naturalidade": "Maputo",
+    "formacao": "Licenciatura em Engenharia",
+    "profissao": "Engenheiro",
+    "documentos": "["bilhete","passaporte"]",
+    "numero_identificacao": "123456789ABC20",
+    "validade_ate": "2026-12-31",
+    "rua_avenida": "Avenida Eduardo Mondlane",
+    "quarteirao": "42",
+    "bairro": "Baixa",
+    "celular": "258840000000",
+    "email": "joao@email.com",
+    "local_servico": "AJOV",
+    "grau_parentesco": "Amigo",
+    "motivacao": "Quero fazer parte...",
+    "aceite_declaracao": true,
+    "data_criacao": "2024-06-13T14:30:45.123Z",
+    "data_atualizacao": "2024-06-13T14:30:45.123Z",
+    "ip_origem": "192.168.1.100",
+    "user_agent": "Mozilla/5.0..."
+  }
+}
+
+RESPOSTA (404):
+{
+  "error": "Cadastro não encontrado"
+}
+
+
+// ===================================
+// 4. ATUALIZAR CADASTRO
+// ===================================
+
+PUT http://localhost:3000/api/cadastro/550e8400-e29b-41d4-a716-446655440000
+Content-Type: application/json
+
+{
+  "celular": "258840000099",
+  "email": "joao.novo@email.com",
+  "localServico": "AJOV - Maputo"
+}
+
+RESPOSTA (200):
+{
+  "success": true,
+  "message": "Cadastro atualizado com sucesso",
+  "data": {
+    "id": "550e8400-e29b-41d4-a716-446655440000",
+    "nome_completo": "João Pedro Silva",
+    "celular": "258840000099",
+    "email": "joao.novo@email.com",
+    "local_servico": "AJOV - Maputo",
+    "data_atualizacao": "2024-06-13T16:20:15.789Z"
+  }
+}
+
+
+// ===================================
+// 5. DELETAR CADASTRO
+// ===================================
+
+DELETE http://localhost:3000/api/cadastro/550e8400-e29b-41d4-a716-446655440000
+
+RESPOSTA (200):
+{
+  "success": true,
+  "message": "Cadastro deletado com sucesso",
+  "id": "550e8400-e29b-41d4-a716-446655440000"
+}
+
+
+// ===================================
+// 6. OBTER ESTATÍSTICAS
+// ===================================
+
+GET http://localhost:3000/api/cadastro/estatisticas
+
+RESPOSTA (200):
+{
+  "success": true,
+  "data": {
+    "total_cadastros": "42",
+    "dias_com_cadastros": "15",
+    "primeiro_cadastro": "2024-06-01T10:30:00.000Z",
+    "ultimo_cadastro": "2024-06-13T16:20:15.789Z"
+  }
+}
+
+
+// ===================================
+// 7. HEALTH CHECK
+// ===================================
+
+GET http://localhost:3000/api/health
+
+RESPOSTA (200):
+{
+  "status": "API funcionando",
+  "timestamp": "2024-06-13T16:25:00.123Z"
+}
+
+
+// ===================================
+// 8. INFORMAÇÕES DA API
+// ===================================
+
+GET http://localhost:3000/
+
+RESPOSTA (200):
+{
+  "message": "Backend AJOV - Ficha de Cadastro",
+  "version": "1.0.0",
+  "endpoints": {
+    "health": "/api/health",
+    "criar_cadastro": "POST /api/cadastro/criar",
+    "listar_cadastros": "GET /api/cadastro/listar",
+    "obter_cadastro": "GET /api/cadastro/:id",
+    "atualizar_cadastro": "PUT /api/cadastro/:id",
+    "deletar_cadastro": "DELETE /api/cadastro/:id"
+  }
+}
+
+
+// ===================================
+// CÓDIGOS DE STATUS HTTP
+// ===================================
+
+200 - OK (Sucesso)
+201 - Created (Recurso criado)
+400 - Bad Request (Dados inválidos)
+404 - Not Found (Recurso não encontrado)
+409 - Conflict (Conflito - ex: ID duplicado)
+500 - Internal Server Error (Erro do servidor)
+
+
+// ===================================
+// DICAS DE TESTE
+// ===================================
+
+1. Use Postman ou Insomnia para testar
+2. Copie e cole os exemplos acima
+3. Altere os valores conforme necessário
+4. Verifique os status codes
+5. Observe as respostas em JSON
+
+// Importar no Postman:
+// 1. File > Import
+// 2. Copiar este conteúdo
+// 3. Import as Raw text

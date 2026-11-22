@@ -1,0 +1,38 @@
+{
+  "name": "ajov-cadastro-backend",
+  "version": "1.0.0",
+  "description": "Backend para Ficha de Cadastro - AJOV",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "check": "node scripts/check-setup.js",
+    "diagnostic": "node scripts/diagnostic.js",
+    "test:quick": "node tests/test-quick.js"
+  },
+  "keywords": [
+    "AJOV",
+    "cadastro",
+    "voluntários"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "uuid": "^9.0.0",
+    "nodemailer": "^6.9.7",
+    "pg": "^8.16.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1",
+    "sqlite3": "^5.1.7"
+  },
+  "allowScripts": {
+    "sqlite3@5.1.7": true
+  },
+  "engines": {
+    "node": ">=22 <27"
+  }
+}
