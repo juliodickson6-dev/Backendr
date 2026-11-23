@@ -72,7 +72,12 @@ async function startServer() {
             console.log(`Ambiente: ${process.env.NODE_ENV || 'development'}`);
         });
     } catch (error) {
-        console.error('Não foi possível iniciar o backend:', error.message);
+        const detalhes = [error.message, error.code, ...(error.errors || []).map(e => `${e.code || ''} ${e.address || ''}:${e.port || ''} ${e.message || ''}`.trim())]
+            .filter(Boolean).join(' | ');
+        console.error('Não foi possível iniciar o backend:', detalhes || error);
+        if (!process.env.DATABASE_URL && !process.env.DB_HOST) {
+            console.error('DATABASE_URL não está definida. No Render: Environment > adicione DATABASE_URL com a "Internal Database URL" do PostgreSQL.');
+        }
         process.exit(1);
     }
 }
