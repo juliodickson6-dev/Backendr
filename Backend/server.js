@@ -10,8 +10,20 @@ const app = express();
 const PORT = Number(process.env.PORT || 3000);
 app.set('trust proxy', 1);
 
-const allowedOrigins = (process.env.CORS_ORIGIN || 'http://localhost:5500,http://127.0.0.1:5500,http://localhost:3000')
-    .split(',').map(origin => origin.trim().replace(/\/+$/, '')).filter(Boolean);
+// Origens autorizadas para os frontends AJOV (Cloudflare e Netlify).
+// CORS_ORIGIN no Render pode acrescentar outros domínios separados por vírgulas.
+const defaultOrigins = [
+    'https://icy-sun-011c.juliodickson6.workers.dev',
+    'https://effulgent-syrniki-ce2487.netlify.app',
+    'http://localhost:5500',
+    'http://127.0.0.1:5500',
+    'http://localhost:3000'
+];
+const configuredOrigins = (process.env.CORS_ORIGIN || '')
+    .split(',')
+    .map(origin => origin.trim().replace(/\/+$/, ''))
+    .filter(Boolean);
+const allowedOrigins = [...new Set([...defaultOrigins, ...configuredOrigins])];
 
 app.use(cors({
     origin(origin, callback) {
